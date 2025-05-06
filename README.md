@@ -17,7 +17,7 @@ A web application for generating and printing tax invoices based on a Thai invoi
 
 1. Clone the repository
    ```
-   git clone https://github.com/your-username/invoice-generator.git
+   git clone https://github.com/Shweddy/invoice-generator.git
    cd invoice-generator
    ```
 
@@ -89,4 +89,4 @@ This project is configured for Git with proper `.gitignore` settings. The follow
 
 ## License
 
-ISC 
+ISC
