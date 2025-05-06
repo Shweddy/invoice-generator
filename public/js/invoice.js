@@ -7,6 +7,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const dateInput = document.getElementById('issuedDateInput');
   dateInput.valueAsDate = today;
   
+  // Format number with thousand separator
+  function formatNumber(num) {
+    return parseFloat(num).toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+  
   // Add item row
   document.getElementById('addItem').addEventListener('click', function() {
     itemCounter++;
@@ -138,17 +146,17 @@ document.addEventListener('DOMContentLoaded', function() {
         <td>${itemCpn}</td>
         <td>${itemDescription}</td>
         <td>${itemQuantity}</td>
-        <td>${parseFloat(itemPrice).toFixed(2)}</td>
-        <td>${parseFloat(itemAmount).toFixed(2)}</td>
+        <td>${formatNumber(itemPrice)}</td>
+        <td>${formatNumber(itemAmount)}</td>
       `;
       
       itemsBody.appendChild(tr);
     });
     
-    // Update totals in preview
-    document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').value;
-    document.getElementById('previewVat').textContent = document.getElementById('vatAmount').value;
-    document.getElementById('previewGrandTotal').textContent = document.getElementById('grandTotal').value;
+    // Update totals in preview with formatted numbers
+    document.getElementById('previewSubtotal').textContent = formatNumber(document.getElementById('subtotal').value);
+    document.getElementById('previewVat').textContent = formatNumber(document.getElementById('vatAmount').value);
+    document.getElementById('previewGrandTotal').textContent = formatNumber(document.getElementById('grandTotal').value);
   });
   
   // Download PDF
