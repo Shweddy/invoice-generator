@@ -113,10 +113,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Format and populate the issued date from the date picker
     const issuedDate = new Date(document.getElementById('issuedDateInput').value);
-    const formattedDate = issuedDate.toLocaleDateString('en-US', {
+    const formattedDate = issuedDate.toLocaleDateString('en-GB', {
       day: '2-digit',
       month: 'short',
-      year: '2-digit'
+      year: 'numeric'
     });
     document.getElementById('issuedDate').textContent = formattedDate;
     document.getElementById('issuedDateCopy').textContent = formattedDate;
