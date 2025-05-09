@@ -19,6 +19,7 @@ lerna-debug.log*
 # Uploaded logo files
 public/uploads/*
 !public/uploads/.gitkeep
+!public/uploads/companylogo.jpg
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
