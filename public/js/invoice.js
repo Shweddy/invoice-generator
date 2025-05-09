@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const dateInput = document.getElementById('issuedDateInput');
   dateInput.valueAsDate = today;
   
+  // Format integer with thousand separator (no decimal places)
+  function formatInteger(num) {
+    // Make sure we have a valid number
+    const value = parseInt(num) || 0;
+    return value.toLocaleString('en-US');
+  }
+  
   // Format number with thousand separator
   function formatNumber(num) {
     return parseFloat(num).toLocaleString('en-US', {
@@ -160,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const itemNumber = row.querySelector('[name="itemNumber"]').value;
       const itemCpn = row.querySelector('[name="itemCpn"]').value;
       const itemDescription = row.querySelector('[name="itemDescription"]').value;
-      const itemQuantity = row.querySelector('[name="itemQuantity"]').value;
+      const itemQuantity = parseInt(row.querySelector('[name="itemQuantity"]').value) || 0;
       const itemPrice = parseFloat(row.querySelector('[name="itemPrice"]').value) || 0;
       const itemAmount = parseFloat(row.querySelector('[name="itemAmount"]').value) || 0;
       
@@ -170,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <td>${itemNumber}</td>
         <td>${itemCpn}</td>
         <td>${itemDescription}</td>
-        <td>${itemQuantity}</td>
+        <td>${formatInteger(itemQuantity)}</td>
         <td>${formatNumber(itemPrice)}</td>
         <td>${formatNumber(itemAmount)}</td>
       `;

@@ -10,7 +10,8 @@ A web application for generating and printing tax invoices based on a Thai invoi
 - Preview invoice before printing or downloading
 - Download invoice as PDF
 - Print invoice directly
-- Company logo display
+- Fixed company logo
+- Thousand separator formatting for numbers
 - Environment variable configuration
 
 ## Setup
@@ -33,9 +34,9 @@ A web application for generating and printing tax invoices based on a Thai invoi
      ```
    - Edit the `.env` file with your company information
 
-4. Add your company logo:
-   - Place your logo image in the `public/uploads` directory
-   - The most recently modified image will be used as the company logo
+4. Company logo:
+   - The application uses a fixed logo file named `companylogo.jpg`
+   - Place your company logo in the `public/uploads` directory with this name
 
 5. Start the server:
    ```

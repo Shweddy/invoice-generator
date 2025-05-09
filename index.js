@@ -18,46 +18,38 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Routes
 app.get('/', (req, res) => {
-  // Find the logo file to use
-  let logoPath = '';
+  // Always use companylogo.jpg as the logo file
+  let logoPath = '/uploads/companylogo.jpg';
+  let absoluteLogoPath = '';
   
-  // Check for logo files in uploads directory
-  const uploadDir = path.join(__dirname, 'public/uploads');
+  // Create data URL for embedded logo
+  const logoFile = path.join(__dirname, 'public', logoPath);
   try {
-    const files = fs.readdirSync(uploadDir);
-    // Find image files
-    const logoFiles = files.filter(file => 
-      file.match(/\.(jpg|jpeg|png|gif)$/i) && 
-      !file.startsWith('.')  // Skip hidden files
-    ).map(fileName => {
-      const filePath = path.join(uploadDir, fileName);
-      return {
-        name: fileName,
-        path: '/uploads/' + fileName,
-        mtime: fs.statSync(filePath).mtime.getTime()
-      };
-    });
-    
-    // Sort by modification time (newest first)
-    logoFiles.sort((a, b) => b.mtime - a.mtime);
-    
-    if (logoFiles.length > 0) {
-      logoPath = logoFiles[0].path;
+    if (fs.existsSync(logoFile)) {
+      // Convert logo to base64 for embedding in HTML/PDF
+      const logoData = fs.readFileSync(logoFile);
+      const logoBase64 = Buffer.from(logoData).toString('base64');
+      const logoType = logoPath.split('.').pop().toLowerCase();
+      absoluteLogoPath = `data:image/${logoType === 'jpg' ? 'jpeg' : logoType};base64,${logoBase64}`;
+      
       console.log('Using logo: ' + logoPath);
     } else {
-      // Default placeholder if no logo found
+      // Default placeholder if logo file not found
       logoPath = 'https://via.placeholder.com/150x80?text=YONGGUI+LOGO';
+      absoluteLogoPath = logoPath;
+      console.log('Logo file not found, using placeholder');
     }
   } catch (err) {
-    console.error('Error reading uploads directory:', err);
+    console.error('Error reading logo file:', err);
     logoPath = 'https://via.placeholder.com/150x80?text=YONGGUI+LOGO';
+    absoluteLogoPath = logoPath;
   }
   
   // Get company information from environment variables
   const companyInfo = {
     name: process.env.COMPANY_NAME || 'YONGGUI ELECTRIC (THAILAND) CO.,LTD.',
     address: process.env.COMPANY_ADDRESS || '7/226, Moo 6, Soi Pornprapha (Amata City Industrial Estate, Rayong)\nMap Yang Phon Sub-district, Pluak Daeng District, Rayong Province 21140',
-    email: process.env.COMPANY_EMAIL || 'aiyadarojwisitphat@yonggui.com',
+    email: process.env.COMPANY_EMAIL || 'apichatrojwisitphat@yonggui.com',
     phone: process.env.COMPANY_PHONE || 'Tel : 0952499128',
     taxId: process.env.COMPANY_TAX_ID || '0215567005375',
     defaultCustomerCode: process.env.DEFAULT_CUSTOMER_CODE || 'SI001'
@@ -65,6 +57,7 @@ app.get('/', (req, res) => {
   
   res.render('index', { 
     logoPath: logoPath,
+    absoluteLogoPath: absoluteLogoPath,
     companyInfo: companyInfo
   });
 });
