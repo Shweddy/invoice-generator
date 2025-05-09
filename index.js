@@ -76,6 +76,17 @@ app.get('/', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    // If port 3000 is in use, try port 3001
+    const newPort = parseInt(PORT) + 1;
+    console.log(`Port ${PORT} is in use, attempting to use port ${newPort} instead`);
+    app.listen(newPort, () => {
+      console.log(`Server is running on http://localhost:${newPort}`);
+    });
+  } else {
+    console.error('Error starting server:', err);
+  }
 }); 
