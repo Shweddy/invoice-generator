@@ -7,6 +7,13 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, 'public/uploads');
+if (!fs.existsSync(uploadsDir)) {
+  console.log('Creating uploads directory at:', uploadsDir);
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -24,20 +31,26 @@ app.get('/', (req, res) => {
   
   // Create data URL for embedded logo
   const logoFile = path.join(__dirname, 'public', logoPath);
+  console.log('Looking for logo file at:', logoFile);
+  
   try {
     if (fs.existsSync(logoFile)) {
+      console.log('Logo file found successfully');
       // Convert logo to base64 for embedding in HTML/PDF
       const logoData = fs.readFileSync(logoFile);
+      console.log('Logo file size:', logoData.length, 'bytes');
+      
       const logoBase64 = Buffer.from(logoData).toString('base64');
       const logoType = logoPath.split('.').pop().toLowerCase();
       absoluteLogoPath = `data:image/${logoType === 'jpg' ? 'jpeg' : logoType};base64,${logoBase64}`;
       
-      console.log('Using logo: ' + logoPath);
+      console.log('Logo loaded successfully:', logoPath);
     } else {
       // Default placeholder if logo file not found
+      console.log('Logo file not found at path:', logoFile);
       logoPath = 'https://via.placeholder.com/150x80?text=YONGGUI+LOGO';
       absoluteLogoPath = logoPath;
-      console.log('Logo file not found, using placeholder');
+      console.log('Using placeholder logo instead');
     }
   } catch (err) {
     console.error('Error reading logo file:', err);
