@@ -1,0 +1,137 @@
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.invoice-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.invoice-title {
+  background-color: #d8e6f3;
+  padding: 10px;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.company-logo {
+  max-width: 150px;
+  max-height: 80px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+}
+
+.company-info {
+  margin-bottom: 15px;
+}
+
+.invoice-details {
+  margin-bottom: 20px;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.invoice-table th, .invoice-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.invoice-table th {
+  background-color: #f2f2f2;
+}
+
+.totals {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.signature-area {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.signature-box {
+  width: 45%;
+  text-align: center;
+  border-top: 1px solid #333;
+  padding-top: 10px;
+}
+
+.original-mark {
+  color: red;
+  font-weight: bold;
+  text-align: right;
+}
+
+@media print {
+  .no-print {
+    display: none;
+  }
+  
+  .container {
+    max-width: 100%;
+  }
+}
+
+#invoiceForm {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.btn-container {
+  margin-top: 20px;
+}
+
+/* Date picker styling */
+input[type="date"] {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ced4da;
+  width: 100%;
+  color: #212529;
+}
+
+input[type="date"]:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Logo styling */
+.logo-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.logo-preview {
+  max-width: 100%;
+  max-height: 100px;
+  object-fit: contain;
+} 

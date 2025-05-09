@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="container mt-4">
+    <h1 class="text-center mb-4">Invoice Generator</h1>
+    
+    <!-- Invoice Form -->
+    <div id="invoiceForm">
+      <div class="card">
+        <div class="card-header">
+          <h5>Create New Invoice</h5>
+        </div>
+        <div class="card-body">
+          <!-- Seller Information -->
+          <h6 class="font-weight-bold">Seller Information</h6>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="sellerName">Company Name</label>
+                <input type="text" class="form-control" id="sellerName" value="<%= companyInfo.name %>">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="sellerTaxId">Tax ID</label>
+                <input type="text" class="form-control" id="sellerTaxId" value="<%= companyInfo.taxId %>">
+              </div>
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <label for="sellerAddress">Address</label>
+            <textarea class="form-control" id="sellerAddress" rows="3"><%= companyInfo.address %></textarea>
+          </div>
+          
+          <!-- Buyer Information -->
+          <h6 class="font-weight-bold">Buyer Information</h6>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="buyerName">Customer Name</label>
+                <input type="text" class="form-control" id="buyerName" placeholder="Enter customer name">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="buyerTaxId">Tax ID</label>
+                <input type="text" class="form-control" id="buyerTaxId" placeholder="Enter tax ID">
+              </div>
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <label for="buyerAddress">Address</label>
+            <textarea class="form-control" id="buyerAddress" rows="3" placeholder="Enter customer address"></textarea>
+          </div>
+          
+          <!-- Invoice Details -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="invoiceNumber">Invoice Number</label>
+                <input type="text" class="form-control" id="invoiceNumber" placeholder="INV-xxxx">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="poNumber">PO Number</label>
+                <input type="text" class="form-control" id="poNumber" placeholder="Enter PO number">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="issuedDateInput">Issued Date</label>
+                <input type="date" class="form-control" id="issuedDateInput">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Invoice Items -->
+          <h6 class="font-weight-bold">Invoice Items</h6>
+          <div class="mb-2">
+            <button type="button" class="btn btn-sm btn-success" id="addItem">Add Item</button>
+            <button type="button" class="btn btn-sm btn-danger" id="removeItem">Remove Item</button>
+          </div>
+          
+          <div class="row fw-bold mb-2">
+            <div class="col-1">No.</div>
+            <div class="col-2">Part No.</div>
+            <div class="col-4">Description</div>
+            <div class="col-1">Qty</div>
+            <div class="col-2">Unit Price</div>
+            <div class="col-2">Amount</div>
+          </div>
+          
+          <div id="itemsContainer">
+            <div class="row item-row mb-3">
+              <div class="col-1">
+                <input type="text" class="form-control" name="itemNumber" value="1" readonly>
+              </div>
+              <div class="col-2">
+                <input type="text" class="form-control" name="itemCpn" placeholder="Part No.">
+              </div>
+              <div class="col-4">
+                <input type="text" class="form-control" name="itemDescription" placeholder="Description">
+              </div>
+              <div class="col-1">
+                <input type="number" class="form-control quantity" name="itemQuantity" placeholder="Qty" min="1" value="1">
+              </div>
+              <div class="col-2">
+                <input type="number" class="form-control price" name="itemPrice" placeholder="Unit Price" min="0" step="0.01">
+              </div>
+              <div class="col-2">
+                <input type="number" class="form-control amount" name="itemAmount" placeholder="Amount" readonly>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Totals -->
+          <div class="row mt-4">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="subtotal" class="col-sm-6 col-form-label text-end">Subtotal:</label>
+                <div class="col-sm-6">
+                  <input type="number" class="form-control" id="subtotal" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="vatRate" class="col-sm-6 col-form-label text-end">VAT Rate (%):</label>
+                <div class="col-sm-6">
+                  <input type="number" class="form-control" id="vatRate" value="7">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="vatAmount" class="col-sm-6 col-form-label text-end">VAT Amount:</label>
+                <div class="col-sm-6">
+                  <input type="number" class="form-control" id="vatAmount" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="grandTotal" class="col-sm-6 col-form-label text-end">Grand Total:</label>
+                <div class="col-sm-6">
+                  <input type="number" class="form-control" id="grandTotal" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-primary" id="generateInvoice">Generate Invoice</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Invoice Preview -->
+    <div id="invoicePreview" class="d-none">
+      <div class="card">
+        <div class="card-body">
+          <!-- Invoice Header -->
+          <div class="row">
+            <div class="col-7">
+              <h5 id="companyName"><%= companyInfo.name %></h5>
+              <div id="companyAddress" class="small">
+                <%= companyInfo.address.split('\\n').join('<br>') %>
+              </div>
+              <div class="small">Email : <%= companyInfo.email %></div>
+              <div class="small">TAX ID: <span id="companyTaxId"><%= companyInfo.taxId %></span> (Head office)</div>
+            </div>
+            <div class="col-5 text-end">
+              <div class="original-mark">ORIGINAL</div>
+              <img src="<%= logoPath %>" alt="Company Logo" class="company-logo" id="invoiceLogoPreview">
+            </div>
+          </div>
+          
+          <!-- Invoice Title -->
+          <div class="invoice-title mt-3">
+            TAX INVOICE / ใบกำกับภาษี
+          </div>
+          
+          <!-- Invoice Details -->
+          <div class="row">
+            <div class="col-6">
+              <table class="table table-sm table-borderless">
+                <tr>
+                  <td width="40%">Doc No.</td>
+                  <td id="invoiceNo">INV NB_2023-04-01</td>
+                </tr>
+                <tr>
+                  <td>Customer Code.</td>
+                  <td>SI001</td>
+                </tr>
+                <tr>
+                  <td>Customer Name:</td>
+                  <td id="customerName"></td>
+                </tr>
+                <tr>
+                  <td>Address:</td>
+                  <td id="customerAddress"></td>
+                </tr>
+                <tr>
+                  <td>Tax ID:</td>
+                  <td id="customerTaxId"></td>
+                </tr>
+                <tr>
+                  <td>Ref PO No:</td>
+                  <td id="poNo"></td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-6">
+              <table class="table table-sm table-borderless">
+                <tr>
+                  <td width="40%">Issued Date</td>
+                  <td id="issuedDate"></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Invoice Items -->
+          <table class="table table-bordered invoice-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Part No.</th>
+                <th>Product code / Description</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Amount (THB)</th>
+              </tr>
+            </thead>
+            <tbody id="itemsBody">
+              <!-- Items will be inserted here -->
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5" class="text-end">Total</td>
+                <td id="previewSubtotal">0.00</td>
+              </tr>
+              <tr>
+                <td colspan="5" class="text-end">Vat 7%</td>
+                <td id="previewVat">0.00</td>
+              </tr>
+              <tr>
+                <td colspan="5" class="text-end">Grand Total</td>
+                <td id="previewGrandTotal">0.00</td>
+              </tr>
+            </tfoot>
+          </table>
+          
+          <!-- Bank Details -->
+          <div class="row mb-3">
+            <div class="col-4">Bank Name:</div>
+            <div class="col-8">BANK OF CHINA (THAI) PUBLIC COMPANY LIMITED</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-4">Bank Account:</div>
+            <div class="col-8">100000301169066</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-4">Bank Address:</div>
+            <div class="col-8">7/51-7/52, M.3, Bowin Sub-district, Sriracha District, Chonburi Province 20230 Thailand</div>
+          </div>
+          
+          <!-- Signatures -->
+          <div class="row mt-5">
+            <div class="col-6">
+              <div>RECEIVED THE ABOVE MENTIONED GOOD IN GOOD ORDER AND CONDITION</div>
+              <div class="signature-area mt-5">
+                <div class="signature-box">
+                  ( Customer Signature )
+                </div>
+              </div>
+            </div>
+            <div class="col-6 text-end">
+              <div>YONGGUI ELECTRIC (THAILAND) CO.,LTD.</div>
+              <div class="signature-box mt-5 ms-auto">
+                Aiyada Rojwisitphat<br>
+                Authorize Signature
+              </div>
+            </div>
+          </div>
+          
+          <!-- Control Buttons -->
+          <div class="text-center mt-4 no-print">
+            <button type="button" class="btn btn-secondary" id="backToForm">Back to Edit</button>
+            <button type="button" class="btn btn-success" id="downloadPdf">Download PDF</button>
+            <button type="button" class="btn btn-info" id="printInvoice">Print</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    window.jsPDF = window.jspdf.jsPDF;
+  </script>
+  <script src="/js/invoice.js"></script>
+</body>
+</html> 
