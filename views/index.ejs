@@ -74,6 +74,18 @@ Rayong Province 21140</textarea>
               </div>
             </div>
           </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="customerCode">Customer Code</label>
+                <input type="text" class="form-control" id="customerCode" placeholder="Enter 6-digit customer code" maxlength="6" pattern="\d{6}">
+                <small class="text-muted">Must be 6 digits (e.g. 000123)</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <!-- Placeholder for alignment -->
+            </div>
+          </div>
           <div class="form-group mb-3">
             <label for="buyerAddress">Address</label>
             <textarea class="form-control" id="buyerAddress" rows="3" placeholder="Enter customer address"></textarea>
@@ -218,7 +230,7 @@ Rayong Province 21140</textarea>
                   </tr>
                   <tr>
                     <td>Customer Code.</td>
-                    <td>SI001</td>
+                    <td id="customerCodeDisplay">SI001</td>
                   </tr>
                   <tr>
                     <td>Customer Name:</td>
@@ -364,7 +376,7 @@ Rayong Province 21140</textarea>
                   </tr>
                   <tr>
                     <td>Customer Code.</td>
-                    <td>SI001</td>
+                    <td id="customerCodeDisplayCopy">SI001</td>
                   </tr>
                   <tr>
                     <td>Customer Name:</td>

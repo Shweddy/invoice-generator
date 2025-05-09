@@ -65,7 +65,7 @@ app.get('/', (req, res) => {
     email: process.env.COMPANY_EMAIL || 'aiyadarojwisitphat@yonggui.com',
     phone: process.env.COMPANY_PHONE || 'Tel : 0952499128',
     taxId: process.env.COMPANY_TAX_ID || '0215567005375',
-    defaultCustomerCode: process.env.DEFAULT_CUSTOMER_CODE || 'SI001'
+    defaultCustomerCode: process.env.DEFAULT_CUSTOMER_CODE || '000001'
   };
   
   res.render('index', { 

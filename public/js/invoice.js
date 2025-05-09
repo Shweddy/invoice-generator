@@ -7,6 +7,25 @@ document.addEventListener('DOMContentLoaded', function() {
   const dateInput = document.getElementById('issuedDateInput');
   dateInput.valueAsDate = today;
   
+  // Validate customer code input to ensure it's 6 digits
+  const customerCodeInput = document.getElementById('customerCode');
+  customerCodeInput.addEventListener('input', function() {
+    // Remove any non-digit characters
+    this.value = this.value.replace(/\D/g, '');
+    
+    // Ensure max length of 6
+    if (this.value.length > 6) {
+      this.value = this.value.slice(0, 6);
+    }
+    
+    // Add leading zeros if needed when focusing out
+    this.addEventListener('blur', function() {
+      if (this.value.length > 0 && this.value.length < 6) {
+        this.value = this.value.padStart(6, '0');
+      }
+    });
+  });
+  
   // Format integer with thousand separator (no decimal places)
   function formatInteger(num) {
     // Make sure we have a valid number
@@ -138,14 +157,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const customerName = document.getElementById('buyerName').value;
     const customerAddress = document.getElementById('buyerAddress').value;
     const customerTaxId = document.getElementById('buyerTaxId').value;
+    const customerCode = document.getElementById('customerCode').value || '000000';
+    
+    // Ensure customer code is 6 digits with leading zeros if needed
+    const formattedCustomerCode = customerCode.padStart(6, '0');
     
     document.getElementById('customerName').textContent = customerName;
     document.getElementById('customerAddress').textContent = customerAddress;
     document.getElementById('customerTaxId').textContent = customerTaxId;
+    document.getElementById('customerCodeDisplay').textContent = formattedCustomerCode;
     
     document.getElementById('customerNameCopy').textContent = customerName;
     document.getElementById('customerAddressCopy').textContent = customerAddress;
     document.getElementById('customerTaxIdCopy').textContent = customerTaxId;
+    document.getElementById('customerCodeDisplayCopy').textContent = formattedCustomerCode;
     
     // Invoice details
     const invoiceNo = document.getElementById('invoiceNumber').value;
