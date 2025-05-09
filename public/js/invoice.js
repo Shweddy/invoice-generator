@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <input type="text" class="form-control" name="itemNumber" value="${itemCounter}" readonly>
       </div>
       <div class="col-2">
-        <input type="text" class="form-control" name="itemCpn" placeholder="CPN">
+        <input type="text" class="form-control" name="itemCpn" placeholder="Part No.">
       </div>
       <div class="col-4">
         <input type="text" class="form-control" name="itemDescription" placeholder="Description">
@@ -138,8 +138,8 @@ document.addEventListener('DOMContentLoaded', function() {
       const itemCpn = row.querySelector('[name="itemCpn"]').value;
       const itemDescription = row.querySelector('[name="itemDescription"]').value;
       const itemQuantity = row.querySelector('[name="itemQuantity"]').value;
-      const itemPrice = row.querySelector('[name="itemPrice"]').value;
-      const itemAmount = row.querySelector('[name="itemAmount"]').value;
+      const itemPrice = parseFloat(row.querySelector('[name="itemPrice"]').value) || 0;
+      const itemAmount = parseFloat(row.querySelector('[name="itemAmount"]').value) || 0;
       
       tr.innerHTML = `
         <td>${itemNumber}</td>
@@ -154,9 +154,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Update totals in preview with formatted numbers
-    document.getElementById('previewSubtotal').textContent = formatNumber(document.getElementById('subtotal').value);
-    document.getElementById('previewVat').textContent = formatNumber(document.getElementById('vatAmount').value);
-    document.getElementById('previewGrandTotal').textContent = formatNumber(document.getElementById('grandTotal').value);
+    const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+    const vatAmount = parseFloat(document.getElementById('vatAmount').value) || 0;
+    const grandTotal = parseFloat(document.getElementById('grandTotal').value) || 0;
+    
+    document.getElementById('previewSubtotal').textContent = formatNumber(subtotal);
+    document.getElementById('previewVat').textContent = formatNumber(vatAmount);
+    document.getElementById('previewGrandTotal').textContent = formatNumber(grandTotal);
   });
   
   // Download PDF
