@@ -6,10 +6,27 @@
   <title>Invoice Generator</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    @media print {
+      @page { 
+        size: A4; 
+        margin: 0; 
+      }
+      body { 
+        margin: 0; 
+      }
+      /* Page-specific print adjustments */
+      .container > h1.text-center.mb-4,
+      .print-hide-url,
+      .browser-url {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container mt-4">
-    <h1 class="text-center mb-4">Invoice Generator</h1>
+    <h1 class="text-center mb-4 no-print">Invoice Generator</h1>
     
     <!-- Invoice Form -->
     <div id="invoiceForm">
@@ -24,19 +41,21 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="sellerName">Company Name</label>
-                <input type="text" class="form-control" id="sellerName" value="<%= companyInfo.name %>">
+                <input type="text" class="form-control" id="sellerName" value="YONGGUI ELECTRIC (THAILAND) CO.,LTD." readonly>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="sellerTaxId">Tax ID</label>
-                <input type="text" class="form-control" id="sellerTaxId" value="<%= companyInfo.taxId %>">
+                <input type="text" class="form-control" id="sellerTaxId" value="0215567005375" readonly>
               </div>
             </div>
           </div>
           <div class="form-group mb-3">
             <label for="sellerAddress">Address</label>
-            <textarea class="form-control" id="sellerAddress" rows="3"><%= companyInfo.address %></textarea>
+            <textarea class="form-control" id="sellerAddress" rows="3" readonly>7/226, Moo 6, Soi Pornprapha (Amata City Industrial Estate, Rayong)
+Map Yang Phon Sub-district, Pluak Daeng District, 
+Rayong Province 21140</textarea>
           </div>
           
           <!-- Buyer Information -->
@@ -161,18 +180,22 @@
     
     <!-- Invoice Preview -->
     <div id="invoicePreview" class="d-none">
-      <div class="card">
+      <!-- Original Invoice -->
+      <div class="card original-invoice">
         <div class="card-body invoice-content">
           <!-- Invoice Header - Top Section -->
           <div class="invoice-top">
             <div class="row">
               <div class="col-7">
-                <h5 id="companyName"><%= companyInfo.name %></h5>
+                <h5 id="companyName">YONGGUI ELECTRIC (THAILAND) CO.,LTD.</h5>
                 <div id="companyAddress" class="small">
-                  <%= companyInfo.address.split('\\n').join('<br>') %>
+                  7/226, Moo 6, Soi Pornprapha (Amata City Industrial Estate, Rayong)<br>
+                  Map Yang Phon Sub-district, Pluak Daeng District,<br>
+                  Rayong Province 21140
                 </div>
-                <div class="small">Email : <%= companyInfo.email %></div>
-                <div class="small">TAX ID: <span id="companyTaxId"><%= companyInfo.taxId %></span> (Head office)</div>
+                <div class="small">Email : aiyadarojwisitphat@yonggui.com</div>
+                <div class="small">Tel : 0952499128</div>
+                <div class="small">TAX ID: <span id="companyTaxId">0215567005375</span> (Head office)</div>
               </div>
               <div class="col-5 text-end">
                 <div class="original-mark">ORIGINAL</div>
@@ -263,16 +286,16 @@
           <div class="invoice-bottom">
             <!-- Bank Details -->
             <div class="row mb-3">
-              <div class="col-4">Bank Name:</div>
-              <div class="col-8">BANK OF CHINA (THAI) PUBLIC COMPANY LIMITED</div>
+              <div class="col-3">Bank Name:</div>
+              <div class="col-9">BANK OF CHINA (THAI) PUBLIC COMPANY LIMITED</div>
             </div>
             <div class="row mb-3">
-              <div class="col-4">Bank Account:</div>
-              <div class="col-8">100000301169066</div>
+              <div class="col-3">Bank Account:</div>
+              <div class="col-9">100000301169066</div>
             </div>
             <div class="row mb-3">
-              <div class="col-4">Bank Address:</div>
-              <div class="col-8">7/51-7/52, M.3, Bowin Sub-district, Sriracha District, Chonburi Province 20230 Thailand</div>
+              <div class="col-3">Bank Address:</div>
+              <div class="col-9">7/51-7/52, M.3, Bowin Sub-district, Sriracha District,<br>Chonburi Province 20230 Thailand</div>
             </div>
             
             <!-- Signatures -->
@@ -295,13 +318,164 @@
             </div>
           </div>
           
-          <!-- Control Buttons -->
-          <div class="text-center mt-4 no-print">
-            <button type="button" class="btn btn-secondary" id="backToForm">Back to Edit</button>
-            <button type="button" class="btn btn-success" id="downloadPdf">Download PDF</button>
-            <button type="button" class="btn btn-info" id="printInvoice">Print</button>
-          </div>
+          <!-- Bottom section with no browser info -->
+          <div class="print-footer-clean"></div>
         </div>
+      </div>
+      
+      <!-- Page Break for Print -->
+      <div class="page-break"></div>
+      
+      <!-- Copy Invoice -->
+      <div class="card copy-invoice">
+        <div class="card-body invoice-content">
+          <!-- Invoice Header - Top Section -->
+          <div class="invoice-top">
+            <div class="row">
+              <div class="col-7">
+                <h5 id="companyNameCopy">YONGGUI ELECTRIC (THAILAND) CO.,LTD.</h5>
+                <div id="companyAddressCopy" class="small">
+                  7/226, Moo 6, Soi Pornprapha (Amata City Industrial Estate, Rayong)<br>
+                  Map Yang Phon Sub-district, Pluak Daeng District,<br>
+                  Rayong Province 21140
+                </div>
+                <div class="small">Email : aiyadarojwisitphat@yonggui.com</div>
+                <div class="small">Tel : 0952499128</div>
+                <div class="small">TAX ID: <span id="companyTaxIdCopy">0215567005375</span> (Head office)</div>
+              </div>
+              <div class="col-5 text-end">
+                <div class="copy-mark">COPY</div>
+                <img src="<%= logoPath %>" alt="Company Logo" class="company-logo">
+              </div>
+            </div>
+            
+            <!-- Invoice Title -->
+            <div class="invoice-title mt-3">
+              TAX INVOICE / ใบกำกับภาษี
+            </div>
+            
+            <!-- Invoice Details -->
+            <div class="row">
+              <div class="col-6">
+                <table class="table table-sm table-borderless">
+                  <tr>
+                    <td width="40%">Doc No.</td>
+                    <td id="invoiceNoCopy">INV NB_2023-04-01</td>
+                  </tr>
+                  <tr>
+                    <td>Customer Code.</td>
+                    <td>SI001</td>
+                  </tr>
+                  <tr>
+                    <td>Customer Name:</td>
+                    <td id="customerNameCopy"></td>
+                  </tr>
+                  <tr>
+                    <td>Address:</td>
+                    <td id="customerAddressCopy"></td>
+                  </tr>
+                  <tr>
+                    <td>Tax ID:</td>
+                    <td id="customerTaxIdCopy"></td>
+                  </tr>
+                  <tr>
+                    <td>Ref PO No:</td>
+                    <td id="poNoCopy"></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-6">
+                <table class="table table-sm table-borderless">
+                  <tr>
+                    <td width="40%">Issued Date</td>
+                    <td id="issuedDateCopy"></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Invoice Items - Middle Section -->
+          <div class="invoice-middle">
+            <table class="table table-bordered invoice-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Part No.</th>
+                  <th>Product code / Description</th>
+                  <th>Quantity</th>
+                  <th>Unit Price</th>
+                  <th>Amount (THB)</th>
+                </tr>
+              </thead>
+              <tbody id="itemsBodyCopy">
+                <!-- Items will be inserted here -->
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="5" class="text-end">Total</td>
+                  <td id="previewSubtotalCopy">0.00</td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="text-end">Vat 7%</td>
+                  <td id="previewVatCopy">0.00</td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="text-end">Grand Total</td>
+                  <td id="previewGrandTotalCopy">0.00</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          
+          <!-- Bank Details and Signatures - Bottom Section -->
+          <div class="invoice-bottom">
+            <!-- Bank Details -->
+            <div class="row mb-3">
+              <div class="col-3">Bank Name:</div>
+              <div class="col-9">BANK OF CHINA (THAI) PUBLIC COMPANY LIMITED</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-3">Bank Account:</div>
+              <div class="col-9">100000301169066</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-3">Bank Address:</div>
+              <div class="col-9">7/51-7/52, M.3, Bowin Sub-district, Sriracha District,<br>Chonburi Province 20230 Thailand</div>
+            </div>
+            
+            <!-- Signatures -->
+            <div class="row mt-5">
+              <div class="col-6">
+                <div>RECEIVED THE ABOVE MENTIONED GOOD IN GOOD ORDER AND CONDITION</div>
+                <div class="signature-area mt-5">
+                  <div class="signature-box">
+                    ( Customer Signature )
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 text-end">
+                <div>YONGGUI ELECTRIC (THAILAND) CO.,LTD.</div>
+                <div class="signature-box mt-5 ms-auto">
+                  Aiyada Rojwisitphat<br>
+                  Authorize Signature
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bottom section with no browser info -->
+          <div class="print-footer-clean"></div>
+        </div>
+      </div>
+      
+      <!-- Control Buttons -->
+      <div class="text-center mt-4 no-print">
+        <button type="button" class="btn btn-secondary" id="backToForm">Back to Edit</button>
+        <button type="button" class="btn btn-success" id="downloadPdf">Download PDF</button>
+        <button type="button" class="btn btn-warning" id="fallbackPdf">Print to PDF</button>
+        <button type="button" class="btn btn-info" id="printOriginal">Print Original</button>
+        <button type="button" class="btn btn-primary" id="printInvoice">Print Both</button>
       </div>
     </div>
   </div>
@@ -313,5 +487,78 @@
     window.jsPDF = window.jspdf.jsPDF;
   </script>
   <script src="/js/invoice.js"></script>
+  <style id="hide-localhost-style">
+    /* Hide any elements with localhost text */
+    body *:not(script):not(style):-webkit-any(:contains("localhost")) {
+      display: none !important;
+      visibility: hidden !important;
+    }
+    
+    /* Print-specific styles to ensure clean output */
+    @media print {
+      /* Remove any page artifacts */
+      @page {
+        size: A4;
+        margin: 1cm;
+      }
+      
+      body::after, body::before {
+        content: none !important;
+        display: none !important;
+      }
+    }
+  </style>
+  <script class="no-print browser-info print-hide-url">
+    // Hide browser URL information
+    window.addEventListener('load', function() {
+      // More aggressive method to hide localhost info
+      function hideLocalhostInfo() {
+        // Try to identify ALL elements that might contain localhost
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach(function(el) {
+          // Check if element has text containing localhost
+          if (el.innerText && el.innerText.includes('localhost:3000')) {
+            el.classList.add('browser-info');
+            el.classList.add('no-print');
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.setAttribute('aria-hidden', 'true');
+          }
+        });
+        
+        // Find and clean all text nodes
+        const walker = document.createTreeWalker(
+          document.body,
+          NodeFilter.SHOW_TEXT,
+          null,
+          false
+        );
+        
+        const nodesToModify = [];
+        let node;
+        while (node = walker.nextNode()) {
+          if (node.nodeValue && node.nodeValue.includes('localhost:3000')) {
+            nodesToModify.push(node);
+          }
+        }
+        
+        // Clean the nodes
+        nodesToModify.forEach(node => {
+          node.nodeValue = "";
+        });
+      }
+      
+      // Run multiple times to catch dynamically added content
+      hideLocalhostInfo();
+      setTimeout(hideLocalhostInfo, 500);
+      setTimeout(hideLocalhostInfo, 1000);
+      
+      // Run before PDF generation
+      document.getElementById('downloadPdf').addEventListener('click', hideLocalhostInfo);
+      
+      // Also run before print
+      window.addEventListener('beforeprint', hideLocalhostInfo);
+    });
+  </script>
 </body>
 </html> 

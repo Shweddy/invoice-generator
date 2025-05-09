@@ -55,11 +55,12 @@ app.get('/', (req, res) => {
   
   // Get company information from environment variables
   const companyInfo = {
-    name: process.env.COMPANY_NAME || 'Your Company Name',
-    address: process.env.COMPANY_ADDRESS || 'Company Address',
-    email: process.env.COMPANY_EMAIL || 'company@example.com',
-    taxId: process.env.COMPANY_TAX_ID || '0000000000000',
-    defaultCustomerCode: process.env.DEFAULT_CUSTOMER_CODE || 'C001'
+    name: process.env.COMPANY_NAME || 'YONGGUI ELECTRIC (THAILAND) CO.,LTD.',
+    address: process.env.COMPANY_ADDRESS || '7/226, Moo 6, Soi Pornprapha (Amata City Industrial Estate, Rayong)\nMap Yang Phon Sub-district, Pluak Daeng District, Rayong Province 21140',
+    email: process.env.COMPANY_EMAIL || 'aiyadarojwisitphat@yonggui.com',
+    phone: process.env.COMPANY_PHONE || 'Tel : 0952499128',
+    taxId: process.env.COMPANY_TAX_ID || '0215567005375',
+    defaultCustomerCode: process.env.DEFAULT_CUSTOMER_CODE || 'SI001'
   };
   
   res.render('index', { 

@@ -79,13 +79,103 @@ body {
   text-align: right;
 }
 
+.copy-mark {
+  color: blue;
+  font-weight: bold;
+  text-align: right;
+}
+
+.copy-invoice {
+  display: none; /* Initially hide the copy */
+}
+
 @media print {
   .no-print {
-    display: none;
+    display: none !important;
   }
   
   .container {
     max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* A4 paper size adjustments */
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
+  
+  /* Ensure address text wraps properly */
+  .small {
+    word-wrap: break-word;
+    max-width: 95%;
+  }
+  
+  /* Reduce font size for address if needed */
+  #companyAddress, #companyAddressCopy {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+  
+  /* Adjust invoice table for better fit */
+  .invoice-table th, .invoice-table td {
+    padding: 5px;
+    font-size: 12px;
+  }
+  
+  /* Hide all browser-generated content */
+  body::before,
+  body::after,
+  html::before,
+  html::after {
+    display: none !important;
+  }
+  
+  /* Page break between original and copy */
+  .page-break {
+    page-break-after: always;
+  }
+  
+  /* Show the copy version during printing */
+  .copy-invoice {
+    display: block;
+  }
+  
+  /* Hide page header and footer */
+  h1.text-center.mb-4 {
+    display: none !important;
+  }
+  
+  /* Remove margins for print */
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Force all browser info elements to be hidden */
+  .browser-info, 
+  .print-hide-url,
+  html body *:not(.invoice-content):not(.card-body):not(.card):not(.invoice-top):not(.invoice-middle):not(.invoice-bottom) small:last-child {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Add a class to hide localhost info */
+.browser-info {
+  position: fixed;
+  bottom: 5px;
+  left: 10px;
+  font-size: 12px;
+  color: #666;
+}
+
+@media print {
+  .browser-info {
+    display: none;
   }
 }
 
@@ -171,5 +261,27 @@ input[type="date"]:focus {
     left: 0;
     right: 0;
     background-color: white;
+  }
+}
+
+.print-footer-clean {
+  position: relative;
+  z-index: 9999;
+  height: 1px;
+  margin-top: 20px;
+  background: transparent;
+}
+
+@media print {
+  .print-footer-clean::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 100%;
+    background: transparent;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 9999;
   }
 } 
